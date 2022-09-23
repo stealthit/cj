@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>채널 그룹 관리</title>
+    <meta http-equiv="Content-Script-Type" content="text/javascript" />
+    <meta http-equiv="Content-Style-Type" content="text/css" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="../../../css/lib/bootstrap.min.css" />
+    <link rel="stylesheet" href="../../../css/lib/jquery-ui.css" />
+    <link rel="stylesheet" href="../../../AUIGrid/AUIGrid_modern_style.css" />
+    <link rel="stylesheet" href="../../../css/core/style.css" />
+    <link rel="stylesheet" href="../../../css/core/main.css" />
+    <link rel="stylesheet" href="../../../css/core/main_extra.css" />
+    <link rel="stylesheet" href="../../../css/core/style_sub.css" />
+
+    <script src="../../../js/lib/jquery.js"></script>
+    <script src="../../../js/all.min.js"></script>
+    <script src="../../../js/lib/vue.js"></script>
+    <script src="../../../js/lib/bootstrap.js"></script>
+    <script src="../../../AUIGrid/AUIGrid.js"></script>
+    <script src="../../../AUIGrid/AUIGridLicense.js"></script>
+  </head>
+  <body>
+    <div class="container-fluid">
+      <div id="app" class="pt-3">
+        <div role="navigation" class="card-box d-flex nav-wrap justify-content-between align-items-center">
+          <ul class="nav nav-tabs step-nav info-nav" role="tablist" id="myTab">
+            <li role="presentation">
+              <a href="#blockGrp" aria-controls="blockGrp" role="tab" data-toggle="tab"
+                ><span class="number">1</span>
+                <div>블록그룹</div>
+              </a>
+            </li>
+            <li role="presentation">
+              <a href="#channel" aria-controls="channel" role="tab" data-toggle="tab">
+                <span class="number">2</span>
+                <div>제작비관리</div></a
+              >
+            </li>
+            <li role="presentation">
+              <a href="#ccSimulation" aria-controls="ccSimulation" role="tab" data-toggle="tab" 
+                ><span class="number">3</span>
+                <div>채널기준<br>시청량관리(월별)</div></a
+              >
+            </li>
+            <li role="presentation" class="active">
+              <a href="#ccView" aria-controls="ccView" role="tab" data-toggle="tab" class="active">
+                <span class="number">4</span>
+                <div>채널그룹 관리</div></a
+              >
+            </li>
+            <li role="presentation">
+              <a href="#rank" aria-controls="rank" role="tab" data-toggle="tab"
+                ><span class="number">5</span>
+                <div>블록관리</div></a
+              >
+            </li>
+            <li role="presentation">
+              <a href="#rank" aria-controls="rank" role="tab" data-toggle="tab"
+                ><span class="number">6</span>
+                <div>재방비율</div></a
+              >
+            </li>
+            <li role="presentation">
+              <a href="#rank" aria-controls="rank" role="tab" data-toggle="tab"
+                ><span class="number">7</span>
+                <div>광고손실율</div></a
+              >
+            </li>
+            <li role="presentation">
+              <a href="#rank" aria-controls="rank" role="tab" data-toggle="tab"
+                ><span class="number">8</span>
+                <div>이벤트관리</div></a
+              >
+            </li>
+          </ul>
+          <div class="d-flex cj-btn-group align-items-end">
+            <button type="button" class="btn btn-prev">이전</button>
+            <button type="button" class="btn btn-next">다음</button>
+          </div>
+        </div>
+        <!-- 검색조건 영역 -->
+        <div class="card card-box mr-0 mt-4 p-4">
+            <div class="d-flex justify-content-between">
+              <div class="d-flex justify-content-start align-items-end">
+                <div class="d-block">
+                  <select id="baseYear" class="form-control cj-selectBox select-box">
+                    <option>기준년도</option>
+                  </select>
+                </div>
+
+                <div class="d-block ml-2">
+                  <select id="channel" class="form-control cj-selectBox select-box">
+                    <option>채널그룹명</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="d-flex cj-btn-group align-items-end">
+                <button class="btn btn-cj"><i class="fa-solid fa-plus"></i>추가</button>
+                <button class="btn btn-cj">저장</button>
+                <button class="btn btn-cj">삭제</button>
+                <button class="btn btn-cj">닫기</button>
+              </div>
+            </div>
+            <!-- grid 영역 -->
+            <div class="mt-4">
+              <div id="chnGrpGrid" style="min-height: 400px"></div>
+            </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      let chnGrpGrid = "";
+      let app = {
+        el: "#app",
+        watch: {
+          gridData: function () {
+            AUIGrid.setGridData(chnGrpGrid, this.gridData);
+          },
+        },
+        mounted() {
+          chnGrpGrid = AUIGrid.destroy("#chnGrpGrid");
+          chnGrpGrid = AUIGrid.create("#chnGrpGrid", this.gridLayout, this.gridProps);
+
+          // 페이지 진입 시 기준년도 산출
+          this.searchCommand.baseYear = new Date().getFullYear();
+          // 기준년도 항목정의(과거:3년, 향후:5년)
+          for (let idx = this.searchCommand.baseYear - 2; idx < this.searchCommand.baseYear + 5; idx += 1) {
+            this.selectOptionItems.baseYear.push({ value: `${idx}`, text: `${idx}년` });
+          }
+
+          this.selectOptionItems.status.push({ value: "I", text: "진행중" });
+          this.selectOptionItems.status.push({ value: "C", text: "확정" });
+
+          this.search();
+        },
+        data: () => ({
+          selectOptionItems: {
+            baseYear: [{ value: "", text: "기준년도" }],
+            division: [{ value: "", text: "구분" }],
+            status: [{ value: "", text: "채널그룹명" }],
+          },
+          searchCommand: {
+            scenarioName: null,
+            baseYear: "",
+            division: "",
+            status: "",
+          },
+          gridData: [],
+          gridLayout: [
+            {
+              headerText: "선택",
+              width: "5%",
+              cellMerge: true,
+              renderer: {
+                type: "CheckBoxEditRenderer",
+                showLabel: false, // 참, 거짓 텍스트 출력여부( 기본값 false )
+                editable: true, // 체크박스 편집 활성화 여부(기본값 : false)
+              },
+              // labelFunction : function(rowIndex, columnIndex, value, headerText, item) {
+              //     // let isChildren = item['version'] > 0;
+              //     // return `<div class="${isChildren ? 'small':''}">${ isChildren ? item['id'] + '-' + item['version']: item['id'] }</div>`
+              //     return `<div class="form-check">
+              //                 <input class="form-check-input" type="checkbox">
+              //             </div>
+              //     `
+              // }
+              editRenderer: {
+                type: "CheckBoxEditRenderer",
+              },
+            },
+            {
+              dataField: "baseYear",
+              headerText: "기준년도",
+              width: "7%",
+              editRenderer: {
+                type: "DropDownListRenderer",
+                list: ["2020년", "2021년", "2022년"],
+              },
+            },
+            {
+              dataField: "fromDate",
+              headerText: "FROM",
+              width: "7%",
+              editRenderer: {
+                type: "BTCalendarRenderer",
+                onlyCalendar: true,
+                // bootstrap-datepicker 속성을 여기에 설정하십시오.
+                // API : https://bootstrap-datepicker.readthedocs.io/en/latest/options.html
+                btOpts: {
+                  language: "ko",
+                }, // end of btOpts
+              },
+            },
+            {
+              dataField: "toDate",
+              headerText: "TO",
+              width: "7%",
+              editRenderer: {
+                type: "BTCalendarRenderer",
+                onlyCalendar: true,
+                // bootstrap-datepicker 속성을 여기에 설정하십시오.
+                // API : https://bootstrap-datepicker.readthedocs.io/en/latest/options.html
+                btOpts: {
+                  language: "ko",
+                }, // end of btOpts
+              },
+            },
+            {
+              dataField: "channelGrp",
+              headerText: "채널그룹명",
+              editRenderer: {
+                type: "DropDownListRenderer",
+                list: ["Total","지상파","종합편성","유료방송","지상파3개"],
+              },
+            },
+            {
+              dataField: "tgChannel",
+              headerText: "대상채널",
+              editRenderer: {
+                type: "DropDownListRenderer",
+                list: ["전체","tvN", "KBS", "SBS", "KBS1", "KBS2", "MBC", "JTBC", "채널A", "TV조선", "MBN", "JTBC", "유료방송"],
+              },
+            },
+            {
+              dataField: "uses",
+              headerText: "활용여부",
+              editRenderer: {
+                type: "DropDownListRenderer",
+                list: ["Y", "N"],
+              },
+            },
+            {
+              dataField: "summary",
+              headerText: "내용",
+              editRenderer: {
+                type: "InputEditRenderer",
+                showEditorBtnOver: true, // 마우스 오버 시 에디터버턴 보이기
+                inputMode: "text",
+              },
+            },
+       
+           
+          ],
+          gridProps: {
+            enableCellMerge: true,
+            enableFilter: false,
+            enableSorting: false,
+            headerHeight: 38,
+            headerHeights: [38, 38],
+            rowHeight: 38,
+            editingOnKeyDown: false,
+            autoGridHeight: false,
+            autoGridWidth: false,
+            ignoreColumnMinWidth: true,
+            softRemoveRowMode: false,
+            // 행 번호 컬럼 활성화 속성입니다.
+            showRowNumColumn: false,
+            /*추가 옵션*/
+            showStateColumn: false,
+            editable: true,
+            noDataMessage: "엑셀데이터를 붙여넣거나 행추가를 통해 데이터를 입력하세요.",
+          },
+        }),
+        methods: {
+          search: function () {
+            console.log("search", this.searchCommand);
+            this.setTestData();
+          },
+          createScenario: function () {
+            this.$refs["refScenarioSummary"].draw();
+          },
+          edit: function (id) {
+            console.log("준비중 edit", id);
+          },
+          version: function (id) {
+            console.log("준비중 version", id);
+          },
+          copy: function (id) {
+            console.log("준비중 copy", id);
+          },
+          remove: function (id) {
+            console.log("준비중 remove", id);
+          },
+          done: function (id) {
+            console.log("준비중 done", id);
+          },
+          setTestData: function () {
+            this.gridData = [];
+            this.gridData.push({
+              baseYear: "2023",
+              fromDate: "2023.01.01",
+              toDate: "2023.12.31",
+              channelGrp: "Total TV",
+              tgChannel: "전체",
+              uses: "Y",
+              summary: "",
+            });
+            this.gridData.push({
+              baseYear: "2023",
+              fromDate: "2023.01.01",
+              toDate: "2023.12.31",
+              channelGrp: "Total TV",
+              tgChannel: "전체",
+              uses: "Y",
+              summary: "",
+            });
+            this.gridData.push({
+              baseYear: "2023",
+              fromDate: "2023.01.01",
+              toDate: "2023.12.31",
+              channelGrp: "Total TV",
+              tgChannel: "전체",
+              uses: "Y",
+              summary: "",
+            });
+            this.gridData.push({
+              baseYear: "2023",
+              fromDate: "2023.01.01",
+              toDate: "2023.12.31",
+              channelGrp: "Total TV",
+              tgChannel: "전체",
+              uses: "Y",
+              summary: "",
+            });
+          },
+        },
+      };
+
+      $(function () {
+        new Vue(app);
+        Vue.nextTick(function () {
+          $(window).resize(function () {
+            AUIGrid.resize("#chnGrpGrid");
+          });
+        });
+        // Vue.component();
+      });
+    </script>
+  </body>
+</html>

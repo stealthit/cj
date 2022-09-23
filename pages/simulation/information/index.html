@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>BDP</title>
+    <meta http-equiv="Content-Script-Type" content="text/javascript" />
+    <meta http-equiv="Content-Style-Type" content="text/css" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="../../../css/lib/bootstrap.min.css" />
+    <link rel="stylesheet" href="../../../css/lib/jquery-ui.css" />
+    <link rel="stylesheet" href="../../../AUIGrid/AUIGrid_modern_style.css" />
+    <link rel="stylesheet" href="../../../css/style_sub.css" />
+    <link rel="stylesheet" href="../../../css/style.css" />
+    <link rel="stylesheet" href="../../../css/main.css" />
+    <script src="../../../js/lib/jquery.js"></script>
+    <script src="../../../js/lib/vue.js"></script>
+    <script src="../../../js/lib/bootstrap.js"></script>
+    <script src="../../../AUIGrid/AUIGrid.js"></script>
+    <script src="../../../AUIGrid/AUIGridLicense.js"></script>
+    <script src="../../../js/index.js"></script>
+    <script src="../../../js/summaryModal.js"></script>
+  </head>
+
+  <body>
+    <div class="container-fluid">
+      <div id="app" class="pt-3">
+        <!-- 검색조건 영역 -->
+        <div class="card card-box mr-0">
+          <div class="card-body">
+            <div class="d-flex justify-content-between">
+              <div class="d-flex justify-content-start align-items-end">
+                <div class="d-block">
+                  <select id="baseYear" class="form-control cj-selectBox select-box">
+                    <option></option>
+                  </select>
+                </div>
+
+                <div class="d-block ml-2">
+                  <select id="channel" class="form-control cj-selectBox select-box" style="min-width: 100px" v-model="searchCommand.status">
+                    <option></option>
+                  </select>
+                </div>
+
+                <div class="d-block ml-2">
+                  <input type="text" class="form-control cj-inputBox"  />
+                </div>
+              </div>
+
+              <div class="d-flex cj-btn-group align-items-end">
+                <button class="btn btn-cj"><i class="fa-solid fa-plus"></i>추가</button>
+                <button class="btn btn-cj">저장</button>
+                <button class="btn btn-cj">삭제</button>
+                <button class="btn btn-cj">닫기</button>
+              </div>
+            </div>
+            <!-- grid 영역 -->
+            <div class="mt-4">
+              <div id="resultGrid" style="min-height: 400px"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
