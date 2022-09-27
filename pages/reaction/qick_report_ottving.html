@@ -7,20 +7,20 @@
     <meta http-equiv="Content-Style-Type" content="text/css" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <link rel="stylesheet" href="../../../css/lib/bootstrap.min.css" />
-    <link rel="stylesheet" href="../../../css/lib/jquery-ui.css" />
-    <link rel="stylesheet" href="../../../AUIGrid/AUIGrid_modern_style.css" />
-    <link rel="stylesheet" href="../../../css/core/style.css" />
-    <link rel="stylesheet" href="../../../css/core/main.css" />
-    <link rel="stylesheet" href="../../../css/core/main_extra.css" />
-    <link rel="stylesheet" href="../../../css/core/style_sub.css" />
+    <link rel="stylesheet" href="../../css/lib/bootstrap.min.css" />
+    <link rel="stylesheet" href="../../css/lib/jquery-ui.css" />
+    <link rel="stylesheet" href="../../AUIGrid/AUIGrid_modern_style.css" />
+    <link rel="stylesheet" href="../../css/core/style.css" />
+    <link rel="stylesheet" href="../../css/core/main.css" />
+    <link rel="stylesheet" href="../../css/core/main_extra.css" />
+    <link rel="stylesheet" href="../../css/core/style_sub.css" />
 
-    <script src="../../../js/lib/jquery.js"></script>
-    <script src="../../../js/lib/vue.js"></script>
-    <script src="../../../js/lib/bootstrap.js"></script>
-    <script src="../../../AUIGrid/AUIGrid.js"></script>
-    <script src="../../../AUIGrid/AUIGridLicense.js"></script>
-    <script src="../../../js/all.min.js"></script>
+    <script src="../../js/lib/jquery.js"></script>
+    <script src="../../js/lib/vue.js"></script>
+    <script src="../../js/lib/bootstrap.js"></script>
+    <script src="../../AUIGrid/AUIGrid.js"></script>
+    <script src="../../AUIGrid/AUIGridLicense.js"></script>
+    <script src="../../js/all.min.js"></script>
   </head>
   <body>
     <div class="container-fluid">
@@ -75,67 +75,86 @@
                             </table>
                           </div>
                         </div>
+                        <!-- 0916 위치수정 -->
                         <div class="cj-btn-group my-auto col-sm-2">
-                          <div class="row justify-content-end mr-2">
-                            <button class="btn btn-cj mr-2">조회</button>
+                          <div class="row justify-content-start mr-2">
+                            <button class="btn btn-cj ml-2">조회</button>
                           </div>
                         </div>
                       </div>
                     </div>
                     <div class="card-inner p-4 mt-4">
+                     
                       <div class="card mr-0">
                         <div class="card-header">회차별 UV및 성연령별 비중(VOD)</div>
-                        <div class="card-body" style="height: 200px"></div>
+                        <div class="card-body" style="height: 200px">
+                        <!-- 0916 ic-max 추가 -->
+                        <span class="ic-max open-grid"><i class="fa-solid fa-maximize"></i></span>
+                        </div>
                       </div>
                       <div class="card mr-0 mt-4">
                         <div class="card-header">티빙 시청 지표 & 가입자 기여도</div>
                         <div class="row">
                           <div class="col-sm-6 pr-0">
                             <div class="card mr-0">
+                              <div class="card-sub-title">UV & 인당시청시간</div>
                               <div class="card-body" style="height: 200px"></div>
                             </div>
                           </div>
                           <div class="col-sm-6 pl-0">
                             <div class="card mr-0">
+                              <div class="card-sub-title">가입자 기여도</div>
                               <div class="card-body" style="height: 200px"></div>
                             </div>
                           </div>
                         </div>
                       </div>
-                      <div id="app1" class="mt-4">
+                      <div id="app1" class="mt-4 table-hide">
                         <div id="tvingRateGrid"></div>
                       </div>
                     </div>
                   </div>
                 </div>
                 <div class="tab-pane" id="recog">
-                  <div class="card card-box mr-0 mt-4 p-4">
+                  <div class="card card-box mr-0 p-4">
                     <div class="card-inner p-4">
                       <!-- naver -->
+                     
                       <div class="card mr-0">
                         <div class="card-header">플렛폼별 검색량 증감 추이 및 성장률(퀵리뷰 대상 프로그램 vs 同 편성블록 평균)</div>
-                        <div class="card-body" style="height: 200px"></div>
+                        <div class="card-body" style="height: 200px">
+                        <!-- 0916 ic-max 추가 -->
+                        <span class="ic-max open-grid"><i class="fa-solid fa-maximize"></i></span>
+                        </div>
                       </div>
                       <!-- grid 영역 -->
-                      <div id="app2" class="mt-4">
+                      <div id="app2" class="mt-4 table-hide">
                         <div id="itrNaverGrid"></div>
                       </div>
 
                       <!-- google -->
+                     
                       <div class="card mr-0 mt-4">
-                        <div class="card-body" style="height: 200px"></div>
+                        <div class="card-body" style="height: 200px">
+                        <!-- 0916 ic-max 추가 -->
+                        <span class="ic-max open-grid"><i class="fa-solid fa-maximize"></i></span>
+                        </div>
                       </div>
                       <!-- grid 영역 -->
-                      <div id="app3" class="mt-4">
+                      <div id="app3" class="mt-4 table-hide">
                         <div id="itrGoogleGrid"></div>
                       </div>
 
                       <!-- youtube -->
+                     
                       <div class="card mr-0 mt-4">
-                        <div class="card-body" style="height: 200px"></div>
+                        <div class="card-body" style="height: 200px">
+                        <!-- 0916 ic-max 추가 -->
+                        <span class="ic-max open-grid"><i class="fa-solid fa-maximize"></i></span>
+                        </div>
                       </div>
                       <!-- grid 영역 -->
-                      <div id="app4" class="mt-4">
+                      <div id="app4" class="mt-4 table-hide">
                         <div id="itrYoutubeGrid"></div>
                       </div>
 
@@ -147,94 +166,106 @@
                           </div>
                         </div>
                         <div class="col-sm-6">
+                          <div class="card-header">언급 Topic 키워드 분포(同 장르 평균 비교)</div>
                           <div class="card mr-0">
-                            <div class="card-header">언급 Topic 키워드 분포(同 장르 평균 비교)</div>
-                            <div class="card-body" style="height: 200px"></div>
+                            <div class="row">
+                              <div class="col-sm-4"><div class="card-body" style="height: 200px"></div></div>
+                              <div class="col-sm-4"><div class="card-body" style="height: 200px"></div></div>
+                              <div class="col-sm-4"><div class="card-body" style="height: 200px"></div></div>
+                            </div>
                           </div>
                         </div>
                       </div>
                     </div>
                     <div class="card-inner p-4 mt-4">
+                      
                       <div class="card-header">시청자 태도/평가</div>
                       <!-- 긍정 -->
                       <div class="row">
                         <div class="col-sm-3 pr-0">
                           <div class="card mr-0">
+                            <div class="card-sub-title">긍정키워드</div>
                             <div class="card-body" style="height: 200px"></div>
                           </div>
                         </div>
                         <div class="col-sm-4 pr-0 pl-0">
                           <div class="card mr-0">
+                            <div class="card-sub-title">긍정반응 Top3</div>
                             <div class="card-body" style="height: 200px"></div>
                           </div>
                         </div>
                         <div class="col-sm-5 pl-0">
                           <div class="card mr-0">
-                            <div class="card-body" style="height: 200px"></div>
+                            <div class="card-sub-title">긍정반응 Topic 분포</div>
+                            <div class="card-body" style="height: 200px">
+                            <!-- 0916 ic-max 추가 -->
+                            <span class="ic-max open-grid"><i class="fa-solid fa-maximize"></i></span>
+                            </div>
                           </div>
                         </div>
                       </div>
                       <!-- grid 영역 -->
-                      <div id="app5" class="mt-4">
+                      <div id="app5" class="mt-4 table-hide">
                         <div id="positiveGrid"></div>
                       </div>
 
                       <!-- 부정 -->
+                    
                       <div class="row mt-4">
                         <div class="col-sm-3 pr-0">
                           <div class="card mr-0">
+                            <div class="card-sub-title">부정키워드</div>
                             <div class="card-body" style="height: 200px"></div>
                           </div>
                         </div>
                         <div class="col-sm-4 pr-0 pl-0">
                           <div class="card mr-0">
+                            <div class="card-sub-title">부정반응 Top3</div>
                             <div class="card-body" style="height: 200px"></div>
                           </div>
                         </div>
                         <div class="col-sm-5 pl-0">
                           <div class="card mr-0">
+                            <div class="card-sub-title">부정반응 Topic 분포</div>
                             <div class="card-body" style="height: 200px"></div>
                           </div>
                         </div>
                       </div>
                       <!-- grid 영역 -->
-                      <div id="app6" class="mt-4">
+                      <div id="app6" class="mt-4 table-hide">
                         <div id="denialGrid"></div>
                       </div>
                     </div>
                   </div>
                 </div>
                 <div class="tab-pane reac-rating" id="reacRating">
-                  <div class="card card-box mr-0 mt-4 p-4">
+                  <div class="card card-box mr-0 p-4">
                     <div class="status-table">
                       <table class="table">
                         <tbody>
                           <tr>
                             <th>긍정 요소</th>
                             <td>
-                              <select class="form-control cj-selectBox select-box">
-                                <option></option>
-                              </select>
+                              <textarea class="form-control" name="" id="" cols="30" rows="5"></textarea>
                             </td>
                           </tr>
                           <tr>
                             <th>부정 요소</th>
                             <td>
-                              <select class="form-control cj-selectBox select-box">
-                                <option></option>
-                              </select>
+                              <textarea class="form-control" name="" id="" cols="30" rows="5"></textarea>
                             </td>
                           </tr>
                           <tr>
                             <th>총평</th>
                             <td>
-                              <select class="form-control cj-selectBox select-box">
-                                <option></option>
-                              </select>
+                              <textarea class="form-control" name="" id="" cols="30" rows="5"></textarea>
                             </td>
                           </tr>
                         </tbody>
                       </table>
+                    </div>
+                    <div class="row justify-content-end mr-1">
+                      <button class="btn btn-cj">저장</button>
                     </div>
                   </div>
                 </div>
@@ -258,8 +289,22 @@
         }
       });
 
-      $(".btn-default").on("click", function () {
+      $(".btn-cj-default").on("click", function () {
         $(this).toggleClass("active");
+      });
+
+      $(".open-grid").on("click", function () {
+        $(this).toggleClass("active");
+
+        if ($(this).hasClass("active")) {
+          // $(this).text("GRID 축소");
+          $(".table-hide").show();
+          $(".cj-button-grid").show();
+        } else {
+          // $(this).text("GRID 확장");
+          $(".table-hide").hide();
+          $(".cj-button-grid").hide();
+        }
       });
 
       let tvingRateGrid = "";
@@ -308,7 +353,8 @@
                 showEditorBtnOver: true, // 마우스 오버 시 에디터버턴 보이기
                 inputMode: "text",
               },
-            },       {
+            },
+            {
               dataField: "",
               headerText: "",
               editRenderer: {
